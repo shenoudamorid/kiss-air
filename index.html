@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiss Air · Lulu's Flight to My Arms</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0d1330; --navy2:#18204a; --red:#ff2e63; --pink:#ff8fb1; --cream:#fff7f2;
+    --ink:#141629; --muted:#6b6f86; --line:#e6e2ef; --gold:#ffc65c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--cream);overflow-x:hidden}
+  .wrap{max-width:640px;margin:0 auto;padding:0 18px}
+  .mono{font-family:"Space Grotesk",monospace}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:20;background:rgba(13,19,48,.92);backdrop-filter:blur(10px);color:#fff}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px}
+  .logo{display:flex;align-items:center;gap:8px;font-weight:800;letter-spacing:-.02em;font-size:19px}
+  .logo i{font-style:normal;display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--red);font-size:15px;transform:rotate(-8deg)}
+  .logo span{color:var(--pink)}
+  nav small{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#aeb3d6}
+
+  /* HERO */
+  .hero{background:radial-gradient(900px 500px at 80% -10%,#3a2470 0%,transparent 60%),linear-gradient(180deg,var(--navy),var(--navy2));
+    color:#fff;padding:46px 0 120px;position:relative;overflow:hidden}
+  .hero .tag{display:inline-flex;gap:8px;align-items:center;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+    background:rgba(255,46,99,.15);color:var(--pink);border:1px solid rgba(255,143,177,.3);padding:7px 12px;border-radius:99px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 0 0 rgba(255,46,99,.7);animation:ping 1.6s infinite}
+  @keyframes ping{70%{box-shadow:0 0 0 9px rgba(255,46,99,0)}100%{box-shadow:0 0 0 0 rgba(255,46,99,0)}}
+  .hero h1{font-size:clamp(36px,9vw,58px);line-height:1;font-weight:800;letter-spacing:-.035em;margin:18px 0 14px}
+  .hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--pink),var(--red));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{color:#c6cae6;font-size:16px;line-height:1.55;max-width:480px}
+  .route{display:flex;align-items:center;gap:14px;margin-top:28px}
+  .route .city b{display:block;font-family:"Space Grotesk";font-size:34px;letter-spacing:.02em}
+  .route .city small{font-size:12px;color:#aeb3d6}
+  .route .path{flex:1;height:2px;background:repeating-linear-gradient(90deg,#5f67a8 0 8px,transparent 8px 14px);position:relative}
+  .route .path::after{content:"✈";position:absolute;top:-13px;left:0;font-size:20px;color:var(--pink);animation:fly 3.5s ease-in-out infinite}
+  @keyframes fly{0%{left:0}100%{left:calc(100% - 20px)}}
+  .clouds{position:absolute;bottom:-2px;left:0;right:0;height:90px;
+    background:radial-gradient(60px 40px at 10% 100%,var(--cream) 98%,transparent),radial-gradient(90px 55px at 30% 100%,var(--cream) 98%,transparent),
+    radial-gradient(70px 45px at 52% 100%,var(--cream) 98%,transparent),radial-gradient(100px 60px at 76% 100%,var(--cream) 98%,transparent),
+    radial-gradient(60px 40px at 96% 100%,var(--cream) 98%,transparent)}
+
+  /* CARDS */
+  .card{background:#fff;border-radius:20px;box-shadow:0 18px 50px rgba(20,22,41,.08);border:1px solid var(--line);padding:24px;margin-top:22px;position:relative;z-index:2}
+  #s1{margin-top:-80px}
+  .step{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:8px}
+  .step b{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;font-size:11px;letter-spacing:0}
+  h2{font-size:24px;letter-spacing:-.02em;font-weight:800;margin-bottom:6px}
+  .sub{color:var(--muted);font-size:14px;line-height:1.5}
+  section{margin-top:28px}
+  label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin:18px 0 6px;letter-spacing:.04em}
+  input{width:100%;font:inherit;font-size:16px;padding:14px 16px;border-radius:12px;border:1.5px solid var(--line);outline:none;transition:.2s;background:#fbfaff}
+  input:focus{border-color:var(--red);box-shadow:0 0 0 4px rgba(255,46,99,.12)}
+  .btn{font:inherit;font-weight:800;font-size:15px;border:none;border-radius:14px;padding:15px 22px;cursor:pointer;transition:.15s;-webkit-tap-highlight-color:transparent}
+  .btn:active{transform:scale(.97)}
+  .btn-red{background:var(--red);color:#fff;box-shadow:0 10px 24px rgba(255,46,99,.35);width:100%;margin-top:16px}
+  .btn-ghost{background:#f1eff8;color:var(--ink)}
+  .locked{opacity:.35;pointer-events:none;filter:grayscale(.6);transition:.5s}
+
+  /* SEATS */
+  .plane{background:#f6f4fb;border-radius:90px 90px 18px 18px;padding:40px 22px 22px;margin-top:16px;position:relative}
+  .plane::before{content:"COCKPIT · PILOT IS DISTRACTED BY YOU";position:absolute;top:14px;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.18em;color:var(--muted);font-weight:700}
+  .seats{display:grid;grid-template-columns:repeat(2,1fr) 26px repeat(2,1fr);gap:8px}
+  .seat{aspect-ratio:1;border-radius:10px 10px 6px 6px;border:none;background:#dcd8e8;color:#8b8aa3;font:700 11px Inter;cursor:pointer;position:relative}
+  .seat.aisle{background:none;cursor:default}
+  .seat.lap{background:var(--red);color:#fff;box-shadow:0 0 0 3px #ffd3df;animation:wiggle 2.4s infinite}
+  .seat.lap.picked{animation:none;background:#16a36b;box-shadow:0 0 0 3px #c9f2df}
+  @keyframes wiggle{0%,90%,100%{transform:none}93%{transform:rotate(-6deg)}96%{transform:rotate(6deg)}}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--muted)}
+  .legend span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px;background:#dcd8e8}
+  .legend span.r::before{background:var(--red)}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(120px);background:var(--navy);color:#fff;font-size:14px;font-weight:600;
+    padding:13px 18px;border-radius:14px;z-index:90;transition:.35s cubic-bezier(.2,1.3,.4,1);max-width:90vw;text-align:center;box-shadow:0 12px 30px rgba(0,0,0,.25)}
+  .toast.on{transform:translateX(-50%) translateY(0)}
+
+  /* BAGGAGE */
+  .bag{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .bag div{border-radius:14px;padding:14px;font-size:13.5px;line-height:1.55}
+  .bag h4{font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+  .ok{background:#eefaf4;color:#155e43}.no{background:#fff0f3;color:#9b1c3d}
+  .bag ul{list-style:none}.bag li{padding:3px 0}
+
+  /* BOARDING PASS */
+  .pass{border-radius:22px;overflow:hidden;box-shadow:0 22px 60px rgba(13,19,48,.25);margin-top:16px;transform:rotateX(90deg);transform-origin:top;transition:transform .9s cubic-bezier(.2,1.2,.3,1);background:#fff}
+  .pass.show{transform:none}
+  .pass-top{background:linear-gradient(120deg,var(--navy),#3a2470);color:#fff;padding:20px 22px}
+  .pass-top .row{display:flex;justify-content:space-between;align-items:center}
+  .pass-top .airline{font-weight:800;font-size:16px}.pass-top .airline span{color:var(--pink)}
+  .pass-top .cls{font-size:10px;font-weight:800;letter-spacing:.16em;background:var(--gold);color:var(--navy);padding:5px 9px;border-radius:6px}
+  .pass-route{display:flex;justify-content:space-between;align-items:flex-end;margin-top:18px}
+  .pass-route b{font-family:"Space Grotesk";font-size:40px;line-height:1;display:block}
+  .pass-route small{font-size:11.5px;color:#aeb3d6}
+  .pass-route .mid{font-size:22px;color:var(--pink);padding-bottom:12px}
+  .pass-body{padding:18px 22px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px 10px}
+  .f small{display:block;font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .f b{font-size:14.5px;display:block;margin-top:3px}
+  .f.wide{grid-column:1/-1}
+  .perf{position:relative;height:0;border-top:2px dashed var(--line);margin:0 22px}
+  .perf::before,.perf::after{content:"";position:absolute;top:-13px;width:24px;height:24px;border-radius:50%;background:var(--cream)}
+  .perf::before{left:-35px}.perf::after{right:-35px}
+  .barcode{padding:16px 22px 20px;display:flex;align-items:center;gap:14px}
+  .bars{flex:1;height:52px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 7px,transparent 7px 8px,var(--ink) 8px 9px,transparent 9px 12px)}
+  .barcode small{font-size:10px;color:var(--muted);writing-mode:vertical-rl;letter-spacing:.1em}
+
+  /* MENU */
+  .menu{margin-top:14px}
+  .dish{display:flex;justify-content:space-between;gap:14px;padding:14px 0;border-bottom:1px dashed var(--line)}
+  .dish:last-child{border:none}
+  .dish h5{font-size:15px}.dish p{font-size:13px;color:var(--muted);margin-top:3px;line-height:1.45}
+  .dish .tag2{flex:none;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;align-self:center;padding:5px 9px;border-radius:99px;background:#fff0f3;color:var(--red)}
+  .course{font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+
+  /* SAFETY */
+  .safety{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .sc{background:#fff8e6;border:1.5px solid #ffe2a1;border-radius:16px;padding:16px 14px;text-align:center}
+  .sc .ic{font-size:34px;line-height:1}
+  .sc h5{font-size:13.5px;margin:10px 0 4px}
+  .sc p{font-size:12.5px;color:#6a5a33;line-height:1.45}
+
+  /* CAPTAIN */
+  .captain{background:var(--navy);color:#e6e8ff;border-radius:20px;padding:22px;margin-top:16px;position:relative}
+  .captain .head{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+  .captain .av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--red),#7b3fe4);display:grid;place-items:center;font-size:20px}
+  .captain .head b{display:block}.captain .head small{color:#9aa0cc;font-size:12px}
+  .captain .msg{font-size:15px;line-height:1.65;min-height:150px}
+  .captain .msg::after{content:"▍";animation:blink 1s infinite;color:var(--pink)}
+  .captain .msg.done::after{display:none}
+  @keyframes blink{50%{opacity:0}}
+  .wave{display:flex;gap:3px;align-items:center;height:18px;margin-left:auto}
+  .wave i{width:3px;background:var(--pink);border-radius:3px;animation:wv 1s infinite ease-in-out}
+  .wave i:nth-child(2){animation-delay:.15s}.wave i:nth-child(3){animation-delay:.3s}.wave i:nth-child(4){animation-delay:.45s}
+  @keyframes wv{0%,100%{height:4px}50%{height:18px}}
+
+  /* TAKEOFF */
+  .takeoff{background:linear-gradient(160deg,#ff2e63,#7b3fe4);color:#fff;border-radius:24px;padding:30px 22px 110px;text-align:center;margin:28px 0 30px;position:relative;overflow:hidden;min-height:290px}
+  .takeoff h2{font-size:28px;color:#fff}
+  .takeoff p{color:#ffe0ea;font-size:14.5px}
+  .tk-row{display:flex;gap:12px;justify-content:center;margin-top:22px}
+  .btn-white{background:#fff;color:var(--red)}
+  #delay{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.4);transition:left .25s,top .25s}
+  #delay.free{position:absolute}
+
+  .overlay{position:fixed;inset:0;z-index:80;display:none;place-items:center;padding:20px;overflow-y:auto;
+    background:radial-gradient(circle at 50% 40%,#3a2470,#0d1330 70%)}
+  .overlay.on{display:grid}
+  .bigplane{position:fixed;font-size:64px;left:-90px;top:70%;z-index:85;pointer-events:none}
+  .bigplane.go{animation:takeoff 2.2s cubic-bezier(.5,0,.6,1) forwards}
+  @keyframes takeoff{0%{left:-90px;top:75%;transform:rotate(-10deg)}100%{left:110vw;top:5%;transform:rotate(-28deg) scale(1.6)}}
+  .landed{max-width:420px;text-align:center;color:#fff;opacity:0;transform:translateY(20px);transition:1s 1.8s}
+  .overlay.on .landed{opacity:1;transform:none}
+  .landed .em{font-size:56px}
+  .landed h3{font-size:34px;letter-spacing:-.03em;margin:10px 0;line-height:1.05}
+  .landed h3 span{color:var(--pink)}
+  .landed p{color:#c6cae6;font-size:15.5px;line-height:1.6}
+  .landed .sig{font-family:Caveat,cursive;font-size:34px;color:var(--pink);margin-top:18px}
+  .heart{position:fixed;top:-40px;z-index:84;pointer-events:none;animation:fall linear forwards}
+  @keyframes fall{to{transform:translateY(115vh) rotate(360deg)}}
+  footer{text-align:center;font-size:11px;color:var(--muted);padding:10px 0 40px;letter-spacing:.06em}
+
+  /* CABIN */
+  .tg{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px dashed var(--line);gap:12px}
+  .tg:last-of-type{border:none}
+  .tg b{font-size:15px;display:block}.tg small{font-size:12.5px;color:var(--muted)}
+  .sw{flex:none;width:52px;height:30px;border-radius:99px;background:#dcd8e8;position:relative;cursor:pointer;transition:.25s;border:none}
+  .sw::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:.25s}
+  .sw.on{background:var(--red)}.sw.on::after{left:25px}
+  .ctrl{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+  .ctrl .btn{width:100%;padding:14px 10px;font-size:14px}
+  .btn-navy{background:var(--navy);color:#fff}
+  body.turb main,body.turb header{animation:turb .12s infinite}
+  @keyframes turb{0%{transform:translate(0)}25%{transform:translate(-5px,3px) rotate(-.4deg)}50%{transform:translate(5px,-2px)}75%{transform:translate(-3px,-3px) rotate(.4deg)}}
+  body.dim main .card,body.dim .pass{filter:brightness(.92)}
+  body.dim{background:#f3e6ea}
+  /* DUTY FREE */
+  .shop{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .item{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fcfbff;display:flex;flex-direction:column}
+  .item .ic{font-size:36px}
+  .item h5{font-size:14.5px;margin-top:8px}.item p{font-size:12px;color:var(--muted);line-height:1.45;margin-top:3px;flex:1}
+  .item .pr{font-size:12px;font-weight:800;color:var(--red);margin-top:8px}
+  .item button{margin-top:10px;font:800 13px Inter;border:none;border-radius:10px;padding:10px;background:#fff0f3;color:var(--red);cursor:pointer}
+  .item button.added{background:#16a36b;color:#fff}
+  .cart{display:flex;justify-content:space-between;align-items:center;background:var(--navy);color:#fff;border-radius:14px;padding:14px 16px;margin-top:14px;font-size:14px}
+  .cart b{color:var(--pink)}
+  /* MOVIES */
+  .reel{display:flex;gap:12px;overflow-x:auto;padding:4px 2px 10px;margin-top:14px;scroll-snap-type:x mandatory}
+  .poster{flex:none;width:150px;height:210px;border-radius:16px;padding:14px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;
+    position:relative;scroll-snap-align:start;cursor:pointer;border:none;text-align:left;font-family:Inter}
+  .poster .r{position:absolute;top:10px;right:10px;font-size:10px;font-weight:800;background:rgba(0,0,0,.55);padding:4px 7px;border-radius:6px}
+  .poster .e{position:absolute;top:14px;left:14px;font-size:34px}
+  .poster b{font-size:16px;line-height:1.15;display:block}.poster small{font-size:11px;opacity:.8;margin-top:4px;display:block}
+  /* AFTER DARK */
+  .dark{background:#120409;color:#ffd9e4;border-radius:22px;padding:24px;position:relative;overflow:hidden;margin-top:22px;border:1px solid #3b0e1c}
+  .dark h2{color:#fff}.dark .sub{color:#d79aab}
+  .dark .step{color:#ff6b8f}.dark .step b{background:#ff2e63}
+  .notes{list-style:none;margin-top:16px;filter:blur(7px);user-select:none;transition:filter .8s}
+  .dark.open .notes{filter:none}
+  .notes li{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #2e0b16;font-size:15px;line-height:1.5}
+  .notes li span{flex:none;font-family:"Space Grotesk";font-weight:700;color:#ff2e63}
+  .gate{position:absolute;inset:auto 0 0 0;top:120px;display:grid;place-items:start center;padding-top:70px;background:linear-gradient(180deg,transparent,rgba(18,4,9,.85) 30%);transition:.5s}
+  .dark.open .gate{opacity:0;pointer-events:none}
+  .gate .btn{background:#ff2e63;color:#fff;box-shadow:0 0 30px rgba(255,46,99,.5)}
+  .gate small{display:block;color:#d79aab;font-size:12px;margin-top:10px;text-align:center}
+  /* CUSTOMS */
+  .chk{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px dashed var(--line);cursor:pointer;font-size:14.5px;line-height:1.45}
+  .chk input{width:22px;height:22px;flex:none;accent-color:var(--red);margin-top:1px}
+  .stamp2{display:none;margin:16px auto 0;font-family:"Space Grotesk";font-weight:700;color:var(--red);border:3px solid var(--red);padding:8px 14px;border-radius:8px;transform:rotate(-6deg);width:max-content;letter-spacing:.08em}
+  .stamp2.on{display:block;animation:pop2 .5s cubic-bezier(.2,1.4,.4,1)}
+  @keyframes pop2{from{transform:scale(.4) rotate(-20deg);opacity:0}}
+  .land{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+  .land button{border:1.5px solid var(--line);background:#fcfbff;border-radius:16px;padding:16px 12px;text-align:left;cursor:pointer;font-family:Inter;transition:.2s}
+  .land button span{font-size:28px;display:block}.land button b{display:block;font-size:15px;margin-top:6px}.land button small{font-size:12px;color:var(--muted)}
+  .land button.sel{border-color:var(--red);background:#fff0f3;box-shadow:0 0 0 3px #ffd3df}
+  .pa{background:var(--navy);color:#fff;border-radius:18px 18px 18px 4px;padding:20px;margin-top:16px;font-size:16.5px;line-height:1.55;font-weight:600;min-height:110px;transition:opacity .25s}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap"><div class="logo"><i>💋</i><div>Kiss<span>Air</span></div></div><small>MNF → HRG</small></div></nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="tag"><span class="dot"></span>Now boarding · Passenger Lulu</div>
+    <h1>Lulu, your flight to <em>my arms</em> is ready.</h1>
+    <p>Welcome aboard Kiss Air, the private airline built for one passenger only: you, Lulu. The pilot can't stop staring at you. Please complete check-in. Turbulence is guaranteed. 😏</p>
+    <div class="route">
+      <div class="city"><b>MNF</b><small>Menoufia</small></div>
+      <div class="path"></div>
+      <div class="city" style="text-align:right"><b>HRG</b><small>Hurghada · My Arms</small></div>
+    </div>
+  </div>
+  <div class="clouds"></div>
+</header>
+
+<main class="wrap">
+
+  <!-- 1 CHECK-IN -->
+  <div class="card" id="s1">
+    <div class="step"><b>1</b>Online check-in</div>
+    <h2>Passenger details</h2>
+    <p class="sub">Only one name on the passenger list. Guess whose. 😏</p>
+    <label for="pname">Passenger name</label>
+    <input id="pname" value="Lulu" readonly style="font-weight:800;letter-spacing:.04em">
+    <div style="font-size:12px;color:#16a36b;font-weight:700;margin-top:8px">✓ Identity verified: the most beautiful passenger in the world</div>
+    <button class="btn btn-red" id="checkin">Check in, Lulu ✈</button>
+  </div>
+
+  <!-- 2 SEAT -->
+  <section class="card locked" id="s2" style="margin-top:22px">
+    <div class="step"><b>2</b>Seat selection</div>
+    <h2>Choose your seat</h2>
+    <p class="sub">Fully booked by my thoughts of you, Lulu. Only one seat left.</p>
+    <div class="plane"><div class="seats" id="seats"></div></div>
+    <div class="legend"><span>Taken (by missing you)</span><span class="r">Available</span></div>
+  </section>
+
+  <!-- 3 BAGGAGE -->
+  <section class="card locked" id="s3" style="margin-top:22px">
+    <div class="step"><b>3</b>Baggage policy</div>
+    <h2>What to pack</h2>
+    <p class="sub">Strict rules. The airline is very serious about this.</p>
+    <div class="bag">
+      <div class="ok"><h4>✅ Allowed</h4><ul><li>That smile</li><li>One cute outfit (optional 😏)</li><li>Your perfume, the dangerous one</li><li>Lip balm (you'll need it)</li><li>All your naughty ideas</li></ul></div>
+      <div class="no"><h4>🚫 Prohibited</h4><ul><li>Pyjamas with too much fabric</li><li>"I'm tired"</li><li>Excuses of any size</li><li>A phone that gets more attention than me</li><li>Leaving early</li></ul></div>
+    </div>
+    <button class="btn btn-red" id="bagok">I agree to the rules 😇</button>
+  </section>
+
+  <!-- 4 PASS -->
+  <section class="locked" id="s4">
+    <div class="step" style="margin-top:6px"><b>4</b>Your boarding pass</div>
+    <div class="pass" id="pass">
+      <div class="pass-top">
+        <div class="row"><div class="airline">💋 Kiss<span>Air</span></div><div class="cls">FIRST CLASS CUDDLES</div></div>
+        <div class="pass-route">
+          <div><b>MNF</b><small>Menoufia</small></div>
+          <div class="mid">✈ ♥ ✈</div>
+          <div style="text-align:right"><b>HRG</b><small>Hurghada · My Arms</small></div>
+        </div>
+      </div>
+      <div class="pass-body">
+        <div class="f wide"><small>Passenger</small><b id="ppName">LULU</b></div>
+        <div class="f"><small>Flight</small><b>KS069</b></div>
+        <div class="f"><small>Boarding door</small><b>Rear only 🍑</b></div>
+        <div class="f"><small>Seat</small><b>My lap</b></div>
+        <div class="f"><small>Boarding</small><b>Tonight</b></div>
+        <div class="f"><small>Duration</small><b>All night</b></div>
+        <div class="f"><small>Return</small><b>Never</b></div>
+      </div>
+      <div class="perf"></div>
+      <div class="barcode"><div class="bars"></div><small class="mono">ILY·143</small></div>
+    </div>
+  </section>
+
+  <!-- 5 MENU -->
+  <section class="card locked" id="s5">
+    <div class="step"><b>5</b>In-flight dining</div>
+    <h2>Tonight's menu for Lulu</h2>
+    <p class="sub">Prepared fresh by the captain. Served slowly.</p>
+    <div class="menu">
+      <div class="course">Starters</div>
+      <div class="dish"><div><h5>Forehead kisses</h5><p>A gentle start. Served with a long hug.</p></div><span class="tag2">Sweet</span></div>
+      <div class="dish"><div><h5>Whispers in your ear</h5><p>The chef refuses to share the recipe.</p></div><span class="tag2">Spicy</span></div>
+      <div class="course">Main course</div>
+      <div class="dish"><div><h5>Slow kisses on the neck</h5><p>Starting just below the ear, working downward at the chef's discretion.</p></div><span class="tag2">🔥 Hot</span></div>
+      <div class="dish"><div><h5>Cuddles, phones off</h5><p>Generous portion. Lasts until morning.</p></div><span class="tag2">Signature</span></div>
+      <div class="course">Dessert</div>
+      <div class="dish"><div><h5>You, unwrapped</h5><p>The only dessert the captain wants. Served without the packaging. Eaten very, very slowly.</p></div><span class="tag2">18+</span></div>
+      <div class="dish"><div><h5>Chef's special: the peach 🍑</h5><p>The captain's favourite. Served from behind, with a firm grip.</p></div><span class="tag2">🔥 Special</span></div>
+      <div class="dish"><div><h5>Breakfast</h5><p>Served at noon. In bed. Because nobody is sleeping tonight.</p></div><span class="tag2">😏</span></div>
+    </div>
+  </section>
+
+  <!-- 6 SAFETY -->
+  <section class="card locked" id="s6">
+    <div class="step"><b>6</b>Safety instructions</div>
+    <h2>Please read carefully</h2>
+    <div class="safety">
+      <div class="sc"><div class="ic">🤗</div><h5>Seatbelt</h5><p>Your seatbelt is my arms. Keep it fastened at all times.</p></div>
+      <div class="sc"><div class="ic">🌡️</div><h5>Cabin temperature</h5><p>It will get very warm. Clothing becomes optional after takeoff.</p></div>
+      <div class="sc"><div class="ic">😮‍💨</div><h5>Oxygen masks</h5><p>They won't help. I'll take your breath away anyway.</p></div>
+      <div class="sc"><div class="ic">🍑</div><h5>Rear entry</h5><p>On this aircraft, all boarding happens through the back. Captain's rules. 😏</p></div>
+      <div class="sc"><div class="ic">🌪️</div><h5>Turbulence</h5><p>Expected. Hold on to me tightly. Tighter.</p></div>
+      <div class="sc"><div class="ic">🔕</div><h5>Noise</h5><p>Screaming is permitted. The walls have signed an NDA.</p></div>
+      <div class="sc"><div class="ic">🙇‍♀️</div><h5>Brace position</h5><p>Face down, hands on the pillow, back arched. The captain handles the rest. 😏</p></div>
+      <div class="sc"><div class="ic">🦵</div><h5>Legs</h5><p>Uncrossed at all times during landing. This is not a request.</p></div>
+    </div>
+  </section>
+
+
+  <!-- 7 PRIVATE CABIN -->
+  <section class="card locked" id="s9">
+    <div class="step"><b>7</b>Upgrade: private cabin</div>
+    <h2>Set the mood, Lulu</h2>
+    <p class="sub">Complimentary upgrade. Only for very naughty passengers.</p>
+    <div style="margin-top:8px">
+      <div class="tg"><div><b>💡 Lights</b><small id="t1">Bright</small></div><button class="sw" data-k="lights"></button></div>
+      <div class="tg"><div><b>🔒 Cabin door</b><small id="t2">Unlocked</small></div><button class="sw" data-k="door"></button></div>
+      <div class="tg"><div><b>📵 Phones</b><small id="t3">On</small></div><button class="sw" data-k="phone"></button></div>
+      <div class="tg"><div><b>👗 Dress code</b><small id="t4">Fully dressed</small></div><button class="sw" data-k="dress"></button></div>
+    </div>
+    <div class="ctrl">
+      <button class="btn btn-navy" id="turbBtn">🌪️ Turbulence</button>
+      <button class="btn btn-red" style="margin:0;box-shadow:none" id="callBtn">🔔 Call the captain</button>
+    </div>
+  </section>
+
+  <!-- 8 DUTY FREE -->
+  <section class="card locked" id="s10">
+    <div class="step"><b>8</b>Duty-free</div>
+    <h2>Duty-free shopping</h2>
+    <p class="sub">Paid in kisses only. Delivered by the captain personally, on arrival.</p>
+    <div class="shop" id="shop">
+      <div class="item"><div class="ic">❤️‍🔥</div><h5>Red lace set</h5><p>Red, obviously. The captain picked it.</p><div class="pr">50 kisses</div><button data-p="50">Add to cart</button></div>
+      <div class="item"><div class="ic">🫙</div><h5>Warming massage oil</h5><p>Full body service included. Takes hours.</p><div class="pr">40 kisses</div><button data-p="40">Add to cart</button></div>
+      <div class="item"><div class="ic">🎀</div><h5>Silk blindfold</h5><p>You won't see what's coming. You'll feel it.</p><div class="pr">35 kisses</div><button data-p="35">Add to cart</button></div>
+      <div class="item"><div class="ic">🚪</div><h5>Do Not Disturb sign</h5><p>Valid for 24 hours. Renewable.</p><div class="pr">10 kisses</div><button data-p="10">Add to cart</button></div>
+      <div class="item"><div class="ic">🍑</div><h5>The peach</h5><p>Not for sale. The captain already claimed it, from behind.</p><div class="pr">Priceless</div><button data-p="0">Add to cart</button></div>
+      <div class="item"><div class="ic">🧊</div><h5>Ice cubes</h5><p>For when things get too hot. They will.</p><div class="pr">15 kisses</div><button data-p="15">Add to cart</button></div>
+      <div class="item"><div class="ic">👔</div><h5>My shirt</h5><p>To wear the morning after. Nothing underneath.</p><div class="pr">Free</div><button data-p="0">Add to cart</button></div>
+    </div>
+    <div class="cart"><span>🛍️ Cart: <b id="cartN">0</b> items</span><span>Total: <b id="cartT">0</b> kisses</span></div>
+  </section>
+
+  <!-- 9 ENTERTAINMENT -->
+  <section class="card locked" id="s11">
+    <div class="step"><b>9</b>In-flight entertainment</div>
+    <h2>Now showing</h2>
+    <p class="sub">Swipe through. Tap to watch. 🍿</p>
+    <div class="reel">
+      <button class="poster" style="background:linear-gradient(160deg,#ff2e63,#5b0f2c)"><span class="e">👀</span><span class="r">18+</span><b>Don't Look at Me Like That</b><small>Romance · Thriller</small></button>
+      <button class="poster" style="background:linear-gradient(160deg,#7b3fe4,#1b0f45)"><span class="e">👗</span><span class="r">18+</span><b>Unbuttoned</b><small>Slow drama · 3 hours</small></button>
+      <button class="poster" style="background:linear-gradient(160deg,#ff8a3d,#6b1d0e)"><span class="e">🌙</span><span class="r">18+</span><b>No Sleep Tonight</b><small>Action · All night</small></button>
+      <button class="poster" style="background:linear-gradient(160deg,#16a36b,#073626)"><span class="e">🛎️</span><span class="r">18+</span><b>Room Service at 2 AM</b><small>Comedy · Very hot</small></button>
+      <button class="poster" style="background:linear-gradient(160deg,#0d1330,#3a2470)"><span class="e">🤫</span><span class="r">18+</span><b>The Walls Are Thin</b><small>Suspense · Shhh</small></button>
+    </div>
+  </section>
+
+  <!-- 10 AFTER DARK -->
+  <section class="dark locked" id="s12">
+    <div class="step"><b>10</b>Restricted area · Crew only</div>
+    <h2>The captain's private notes 🔞</h2>
+    <p class="sub">Classified flight plan for the night you land.</p>
+    <ul class="notes">
+      <li><span>01</span>The door closes, your back meets the wall, and my hands are already busy. Bags can wait. 😏</li>
+      <li><span>02</span>First kiss: your lips. Second: your neck. Third: wherever my hands are already going.</li>
+      <li><span>03</span>That outfit has a very short life expectancy. About thirty seconds.</li>
+      <li><span>04</span>I take my time with every inch of you. You'll beg me to hurry. I won't.</li>
+      <li><span>05</span>You'll be on top first. Then it's my turn to take control.</li>
+      <li><span>06</span>You'll forget your own name. I'll keep whispering it in your ear: Lulu… Lulu…</li>
+      <li><span>07</span>Round two uses the rear entrance. Captain's orders. 🍑</li>
+      <li><span>08</span>The bed, the shower, the sofa. Tonight's flight plan covers every room.</li>
+      <li><span>09</span>You'll be shaking, out of breath, and I'll still be going.</li>
+      <li><span>10</span>The neighbours will hear things. That's their problem.</li>
+      <li><span>11</span>Sleep is cancelled. Breakfast is at noon, in bed, and you're on the menu again.</li>
+    </ul>
+    <div class="gate"><div><button class="btn" id="gateBtn">I'm alone. Show me 🔥</button><small>Don't open this next to your family 😂</small></div></div>
+  </section>
+
+  <!-- LANDING TYPE -->
+  <section class="card locked" id="s14">
+    <div class="step"><b>11</b>Landing preferences</div>
+    <h2>How would you like to land?</h2>
+    <p class="sub">Pick one. Or all of them. The captain is very flexible.</p>
+    <div class="land" id="land">
+      <button data-m="Gentle landing selected. Slow, soft, and I'll make it last forever. 🪶"><span>🪶</span><b>Gentle</b><small>Slow, soft, lots of kisses</small></button>
+      <button data-m="Hard landing selected. You'll still feel it tomorrow. 🔥"><span>🔥</span><b>Hard</b><small>You'll feel it tomorrow</small></button>
+      <button data-m="Rear landing selected. The captain's favourite approach. 🍑😏"><span>🍑</span><b>From behind</b><small>Captain's favourite</small></button>
+      <button data-m="Multiple landings selected. Refuelling between rounds is included. 🔁"><span>🔁</span><b>Multiple</b><small>Refuelling included</small></button>
+    </div>
+  </section>
+
+  <!-- ANNOUNCEMENTS -->
+  <section class="card locked" id="s15">
+    <div class="step"><b>12</b>Cabin announcements</div>
+    <h2>Do not read aloud 🤫</h2>
+    <p class="sub">Tap the speaker for the next announcement.</p>
+    <div class="pa" id="pa">"Good evening, Lulu. Please fasten your seatbelt. It's going to be a bumpy night."</div>
+    <button class="btn btn-red" id="paBtn">📢 Next announcement</button>
+  </section>
+  <!-- 7 CAPTAIN -->
+  <section class="locked" id="s7">
+    <div class="captain">
+      <div class="head"><div class="av">👨‍✈️</div><div><b>Message from your captain</b><small>Live from the cockpit</small></div>
+        <div class="wave"><i></i><i></i><i></i><i></i></div></div>
+      <div class="msg" id="capmsg"></div>
+    </div>
+  </section>
+
+  <!-- CUSTOMS -->
+  <section class="card locked" id="s13">
+    <div class="step"><b>13</b>Arrival · Customs</div>
+    <h2>Customs declaration</h2>
+    <p class="sub">Required before landing in Hurghada. Answer honestly, Lulu. 😏</p>
+    <label class="chk"><input type="checkbox">I have nothing to declare except how badly I want you.</label>
+    <label class="chk"><input type="checkbox">I'm wearing something I'll regret… or definitely not regret.</label>
+    <label class="chk"><input type="checkbox">I had naughty thoughts during this flight. Several. Detailed.</label>
+    <label class="chk"><input type="checkbox">I'm not planning to sleep tonight.</label>
+    <label class="chk"><input type="checkbox">I understand the captain will be very interested in my back side. 🍑</label>
+    <label class="chk"><input type="checkbox">I agree to be kissed the moment I arrive, before saying hello.</label>
+    <button class="btn btn-red" id="custBtn">Submit declaration</button>
+    <div class="stamp2" id="custStamp">APPROVED · HURGHADA CUSTOMS 💋</div>
+  </section>
+
+  <!-- 8 TAKEOFF -->
+  <section class="takeoff locked" id="s8">
+    <h2>Ready for takeoff, Lulu?</h2>
+    <p>Menoufia → Hurghada. The engines are warm. The captain waiting in Hurghada is warmer.</p>
+    <div class="tk-row">
+      <button class="btn btn-white" id="go">Take off 🚀</button>
+      <button class="btn" id="delay">Delay flight</button>
+    </div>
+  </section>
+
+</main>
+<footer>Kiss Air is a fully licensed airline of love. Members: Lulu only, forever.</footer>
+
+<div class="toast" id="toast"></div>
+<div class="bigplane" id="bigplane">✈️</div>
+<div class="overlay" id="overlay">
+  <div class="landed">
+    <div class="em">🛬💘</div>
+    <h3>Welcome to <span>Hurghada</span>.<br>Final stop: my arms.</h3>
+    <p id="landmsg">Thank you for flying Kiss Air. Please remain seated in my lap until the captain has finished kissing you. This may take a while. 😏</p>
+    <div class="sig">I love you, Lulu. Come here.</div>
+    <p style="margin-top:22px"><button class="btn btn-ghost" id="again">Fly again</button></p>
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+let pname='Lulu';
+const toast=(t)=>{const el=$('toast');el.textContent=t;el.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('on'),2200)};
+const unlock=(id)=>{const el=$(id);el.classList.remove('locked');setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150)};
+
+// 1 check-in
+$('checkin').addEventListener('click',()=>{
+  
+  $('ppName').textContent=pname.toUpperCase();
+  toast(`Welcome aboard, ${pname} 💋`);
+  unlock('s2');
+});
+$('pname').addEventListener('keydown',e=>{if(e.key==='Enter')$('checkin').click()});
+
+// 2 seats
+const no=['Taken by my thoughts of you','Reserved for missing you','Occupied by a daydream about you','Nope. Too far from me.','This seat has no cuddles','Window seat? The view is Lulu anyway.','Blocked for your safety 😏','Facing forward? The captain prefers you facing the other way. 🍑'];
+const seats=$('seats'); let n=0;
+for(let r=0;r<6;r++){for(let c=0;c<5;c++){
+  const b=document.createElement('button');b.className='seat';
+  if(c===2){b.classList.add('aisle');b.disabled=true;seats.appendChild(b);continue}
+  const label=(r+1)+'ABCD'[c>2?c-1:c];
+  if(r===3&&c===3){b.classList.add('lap');b.textContent='♥';b.title='My lap';
+    b.onclick=()=>{b.classList.add('picked');b.textContent='✓';toast('Seat confirmed: My lap. Excellent choice. 😏');setTimeout(()=>unlock('s3'),900)};
+  } else {b.textContent=label;b.onclick=()=>toast(no[n++%no.length])}
+  seats.appendChild(b);
+}}
+
+// 3 baggage → pass
+$('bagok').addEventListener('click',()=>{
+  toast('Baggage approved. Pyjamas confiscated. 😇');
+  unlock('s4'); setTimeout(()=>$('pass').classList.add('show'),500);
+  setTimeout(()=>{['s5','s6','s9','s10','s11','s12','s14','s15','s7','s13','s8'].forEach(id=>$(id).classList.remove('locked'));startCaptain()},1400);
+});
+
+// 7 captain typewriter
+let capStarted=false;
+function startCaptain(){
+  const io=new IntersectionObserver(es=>{if(es[0].isIntersecting&&!capStarted){capStarted=true;type();io.disconnect()}},{threshold:.4});
+  io.observe($('s7'));
+}
+function type(){
+  const txt=`Good evening, ${pname}. This is your captain speaking. 🎙️\n\nToday's route: Menoufia to Hurghada. Around 600 km of me missing you, and I'm counting every single one.\n\nWe are flying at an altitude of "I miss you way too much", with a speed of "please hurry up". Weather at our destination: very hot, with a 100% chance of kisses.\n\nI'll be honest: I've been thinking about you all day. I can't focus on anything. So please sit back, relax, and let me take care of everything else. 😏`;
+  const el=$('capmsg');let i=0;
+  (function step(){ if(i<=txt.length){el.innerHTML=txt.slice(0,i).replace(/\n/g,'<br>');i++;setTimeout(step,txt[i-1]==='\n'?250:22)} else el.classList.add('done') })();
+}
+
+
+// cabin toggles
+const tgText={lights:['Bright','Dimmed… candles only 🕯️'],door:['Unlocked','Locked. Nobody comes in. 🔒'],phone:['On','Off. Only me tonight.'],dress:['Fully dressed','Optional 😏']};
+const tgId={lights:'t1',door:'t2',phone:'t3',dress:'t4'};
+document.querySelectorAll('.sw').forEach(sw=>sw.addEventListener('click',()=>{
+  const k=sw.dataset.k;
+  if(k==='dress'&&sw.classList.contains('on')){toast('Sorry, Lulu. Once optional, always optional. 😏');return}
+  sw.classList.toggle('on');const on=sw.classList.contains('on');
+  $(tgId[k]).textContent=tgText[k][on?1:0];
+  if(k==='lights')document.body.classList.toggle('dim',on);
+  if(k==='dress'&&on)toast('Dress code updated. The captain approves. 🔥');
+}));
+$('turbBtn').addEventListener('click',()=>{document.body.classList.add('turb');toast('Turbulence! Hold on to me… tighter. 😏');setTimeout(()=>document.body.classList.remove('turb'),1300)});
+const calls=['The captain is on his way to kiss your neck. 💋','Request received: one very long hug from behind.','The captain says: stop being this hot, it\'s distracting.','Blanket service? Sorry, I\'m the blanket tonight.','The captain will be right there… to help with that zipper. 😇','Room temperature raised. You\'re welcome. 🔥','The captain is coming… to your seat. Turn around. 🍑','Request denied: you\'re not allowed to put anything back on.'];
+let ci=0;$('callBtn').addEventListener('click',()=>toast(calls[ci++%calls.length]));
+
+// duty free
+let cn=0,ct=0;
+document.querySelectorAll('#shop button').forEach(b=>b.addEventListener('click',()=>{
+  const p=+b.dataset.p;
+  if(b.classList.toggle('added')){cn++;ct+=p;b.textContent='Added ✓';toast(p?`Added. That's ${p} more kisses you owe me. 😘`:(b.parentElement.querySelector('h5').textContent.includes('peach')?'Already reserved for the captain. 🍑😏':'Free, as long as you wear nothing else. 😏'))}
+  else{cn--;ct-=p;b.textContent='Add to cart'}
+  $('cartN').textContent=cn;$('cartT').textContent=ct;
+}));
+
+// movies
+const mv=['Restricted: available on arrival only 🔞','This one is best watched in person. With me.','Loading… just kidding. Live performance only. 😏','Sorry, the captain wants to show you this one personally.','Available in Hurghada. Tonight. No popcorn needed.'];
+document.querySelectorAll('.poster').forEach((p,i)=>p.addEventListener('click',()=>toast(mv[i%mv.length])));
+
+// after dark
+$('gateBtn').addEventListener('click',()=>{$('s12').classList.add('open');toast('Access granted. Breathe, Lulu. 🥵')});
+
+// customs
+$('custBtn').addEventListener('click',()=>{
+  const boxes=[...document.querySelectorAll('#s13 input')];
+  if(boxes.some(b=>!b.checked)){toast('All boxes must be checked. Lying to customs is illegal, Lulu. 😏');return}
+  $('custStamp').classList.add('on');toast('Declaration approved. Proceed to my arms. 💋');
+});
+
+
+// landing type
+document.querySelectorAll('#land button').forEach(b=>b.addEventListener('click',()=>{b.classList.toggle('sel');if(b.classList.contains('sel'))toast(b.dataset.m)}));
+// announcements
+const pas=[
+"Ladies and gentlemen… actually, just Lulu: we are beginning our descent. Slowly. Very slowly. All the way down.",
+"Please keep your legs uncrossed for landing. Captain's orders.",
+"Passengers in the back will be receiving very special attention tonight. 🍑",
+"Cabin crew, prepare for arrival. Lulu, prepare to arrive more than once. 😏",
+"The captain reminds you: you'll be sore tomorrow. Please plan your day accordingly.",
+"We're expecting heavy turbulence in the bedroom area. Hold on to the headboard.",
+"For your comfort, all clothing must be removed before landing. Thank you for your cooperation.",
+"This is your captain. I'm already hard at work up here… thinking about you. 😇",
+"Good evening, Lulu. Please fasten your seatbelt. It's going to be a bumpy night."];
+let pi=0;$('paBtn').addEventListener('click',()=>{const el=$('pa');el.style.opacity=0;setTimeout(()=>{el.textContent='"'+pas[pi++%pas.length]+'"';el.style.opacity=1},220)});
+
+// 8 runaway delay
+const quips=['Delays not permitted','Nice try 😏','Flight is on time','The captain says no','Not happening','Just press Take off 🥺'];
+let qi=0;const arena=$('s8'),dl=$('delay');
+function flee(e){ if(e)e.preventDefault();
+  const a=arena.getBoundingClientRect(),b=dl.getBoundingClientRect();dl.classList.add('free');
+  const x=10+Math.random()*(a.width-b.width-20), y=a.height*.5+Math.random()*(a.height*.5-b.height-14);
+  dl.style.left=x+'px';dl.style.top=y+'px';dl.textContent=quips[qi++%quips.length];
+}
+dl.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')flee()});
+dl.addEventListener('pointerdown',flee);dl.addEventListener('click',flee);
+
+// takeoff
+function hearts(){const set=['💋','❤️','💗','🔥','💘','😘'];
+  for(let i=0;i<40;i++){const h=document.createElement('div');h.className='heart';h.textContent=set[Math.floor(Math.random()*set.length)];
+    h.style.left=Math.random()*100+'vw';h.style.fontSize=(18+Math.random()*24)+'px';h.style.animationDuration=(2.6+Math.random()*3)+'s';
+    h.style.animationDelay=(1.6+Math.random()*1.6)+'s';document.body.appendChild(h);setTimeout(()=>h.remove(),9000)}}
+$('go').addEventListener('click',()=>{
+  const p=$('bigplane');p.classList.remove('go');void p.offsetWidth;p.classList.add('go');
+  $('overlay').classList.add('on');hearts();
+  $('landmsg').textContent=`Thank you for flying Kiss Air, ${pname}. Please remain seated in my lap until the captain has finished kissing you. This may take a while. 😏`;
+});
+$('again').addEventListener('click',()=>{$('overlay').classList.remove('on');window.scrollTo({top:0,behavior:'smooth'})});
+</script>
+</body>
+</html>
