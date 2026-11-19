@@ -251,6 +251,22 @@
   .past-grid .w{grid-column:1/-1}
   .past-grid small{display:block;font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
   .past-grid b{font-size:13.5px;display:block;margin-top:3px}
+  .tip{margin-top:14px;background:linear-gradient(135deg,#fff0f3,#f3edff);border:1.5px solid #ffc9d7;border-radius:14px;padding:13px 14px;font-size:13.5px;line-height:1.55;color:#3b2a44}
+  .tip b{display:block;color:var(--red);font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+  .hint{display:inline-block;margin-top:10px;font-size:12.5px;font-weight:700;color:var(--red);background:#fff0f3;border-radius:99px;padding:6px 12px;animation:nudge 2.4s infinite}
+  @keyframes nudge{0%,80%,100%{transform:none}85%{transform:translateY(-3px)}90%{transform:none}95%{transform:translateY(-2px)}}
+  .toast{top:68px;bottom:auto;transform:translateX(-50%) translateY(-24px) scale(.96);opacity:0;pointer-events:none;
+    display:flex;gap:10px;align-items:flex-start;text-align:left;font-size:15.5px;line-height:1.45;font-weight:700;
+    padding:16px 18px;border-radius:18px;width:min(92vw,440px);max-width:none;
+    background:linear-gradient(135deg,#1b2155,#3a2470);border:1.5px solid rgba(255,143,177,.55);
+    box-shadow:0 18px 50px rgba(13,19,48,.45),0 0 0 4px rgba(255,46,99,.12);transition:.35s cubic-bezier(.2,1.3,.4,1)}
+  .toast.on{transform:translateX(-50%) translateY(0) scale(1);opacity:1;pointer-events:auto}
+  .toast .ti{font-size:22px;line-height:1}
+  .prog{position:fixed;bottom:14px;right:12px;z-index:30;background:#fff;color:var(--ink);border:1.5px solid var(--line);border-radius:99px;
+    padding:7px 12px;font-size:12px;font-weight:800;box-shadow:0 6px 18px rgba(20,22,41,.12);display:none}
+  .prog.on{display:block}.prog b{color:var(--red)}
+  .prog.bump{animation:pop2 .45s cubic-bezier(.2,1.4,.4,1)}
+  .prog.done{background:var(--red);color:#fff;border-color:var(--red)}.prog.done b{color:#fff}
 </style>
 </head>
 <body>
@@ -278,6 +294,7 @@
     <div class="step"><b>1</b>Online check-in</div>
     <h2>Passenger details</h2>
     <p class="sub">Only one name on the passenger list. Guess whose. 😏</p>
+    <div class="tip"><b>💡 Captain's tip</b>Tap, swipe, switch and try <u>everything</u> on this page. Every seat, button, switch and card hides a secret message. Track your progress with the 🔓 counter in the bottom corner. Find them all, Lulu. 😏</div>
     <label for="pname">Passenger name</label>
     <input id="pname" value="Lulu" readonly style="font-weight:800;letter-spacing:.04em">
     <div style="font-size:12px;color:#16a36b;font-weight:700;margin-top:8px">✓ Identity verified: the most beautiful passenger in the world</div>
@@ -290,6 +307,7 @@
     <div class="step"><b>2</b>Seat selection</div>
     <h2>Choose your seat</h2>
     <p class="sub">Fully booked by my thoughts of you, Lulu. Only one seat left.</p>
+    <div class="hint">👆 Tap the grey seats first. Each one has something to say.</div>
     <div class="plane"><div class="seats" id="seats"></div></div>
     <div class="legend"><span>Taken (by missing you)</span><span class="r">Available</span></div>
   </section>
@@ -403,6 +421,7 @@
     <div class="step"><b>7</b>Upgrade: private cabin</div>
     <h2>Set the mood, Lulu</h2>
     <p class="sub">Complimentary upgrade. Only for very naughty passengers.</p>
+    <div class="hint">👆 Flip every switch, drag the volume, and press all the buttons.</div>
     <div style="margin-top:8px">
       <div class="tg"><div><b>💡 Lights</b><small id="t1">Bright</small></div><button class="sw" data-k="lights"></button></div>
       <div class="tg"><div><b>🔒 Cabin door</b><small id="t2">Unlocked</small></div><button class="sw" data-k="door"></button></div>
@@ -436,6 +455,7 @@
     <div class="step"><b>8</b>Duty-free</div>
     <h2>Duty-free shopping</h2>
     <p class="sub">Paid in kisses only. Delivered by the captain personally, on arrival.</p>
+    <div class="hint">👆 Add every item to your cart. Read the messages.</div>
     <div class="shop" id="shop">
       <div class="item"><div class="ic">❤️‍🔥</div><h5>Red lace set</h5><p>Red, obviously. The captain picked it.</p><div class="pr">50 kisses</div><button data-p="50">Add to cart</button></div>
       <div class="item"><div class="ic">🫙</div><h5>Warming massage oil</h5><p>Full body service included. Takes hours.</p><div class="pr">40 kisses</div><button data-p="40">Add to cart</button></div>
@@ -454,6 +474,7 @@
     <div class="step"><b>9</b>In-flight entertainment</div>
     <h2>Now showing</h2>
     <p class="sub">Swipe through. Tap to watch. 🍿</p>
+    <div class="hint">👆 Tap each poster. Swipe for more →</div>
     <div class="reel">
       <button class="poster" style="background:linear-gradient(160deg,#ff2e63,#5b0f2c)"><span class="e">👀</span><span class="r">18+</span><b>Don't Look at Me Like That</b><small>Romance · Thriller</small></button>
       <button class="poster" style="background:linear-gradient(160deg,#7b3fe4,#1b0f45)"><span class="e">👗</span><span class="r">18+</span><b>Unbuttoned</b><small>Slow drama · 3 hours</small></button>
@@ -491,6 +512,7 @@
     <div class="step"><b>11</b>Landing preferences</div>
     <h2>How would you like to land?</h2>
     <p class="sub">Pick one. Or all of them. The captain is very flexible.</p>
+    <div class="hint">👆 Tap every option.</div>
     <div class="land" id="land">
       <button data-m="Gentle landing selected. Slow, soft, and I'll make it last forever. 🪶"><span>🪶</span><b>Gentle</b><small>Slow, soft, lots of kisses</small></button>
       <button data-m="Hard landing selected. You'll still feel it tomorrow. 🔥"><span>🔥</span><b>Hard</b><small>You'll feel it tomorrow</small></button>
@@ -504,6 +526,7 @@
     <div class="step"><b>12</b>Cabin announcements</div>
     <h2>Do not read aloud 🤫</h2>
     <p class="sub">Tap the speaker for the next announcement.</p>
+    <div class="hint">👆 Keep tapping. There are lots of them.</div>
     <div class="pa" id="pa">"Good evening, Lulu. Please fasten your seatbelt. It's going to be a bumpy night."</div>
     <button class="btn btn-red" id="paBtn">📢 Next announcement</button>
   </section>
@@ -547,7 +570,8 @@
 </main>
 <footer>Kiss Air is a fully licensed airline of love. Members: Lulu only, forever.</footer>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast"><span class="ti">💌</span><span id="toastTxt"></span></div>
+<div class="prog" id="prog">🔓 Secrets <b id="progN">0</b>/<span id="progT">0</span></div>
 <div class="bigplane" id="bigplane">✈️</div>
 <div class="overlay" id="overlay">
   <div class="landed">
@@ -562,13 +586,22 @@
 <script>
 const $=id=>document.getElementById(id);
 let pname='Lulu';
-const toast=(t)=>{const el=$('toast');el.textContent=t;el.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('on'),2200)};
+const toast=(t)=>{const el=$('toast');el.classList.remove('on');void el.offsetWidth;$('toastTxt').textContent=t;el.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('on'),Math.max(3200,1800+t.length*45))};
+$('toast').addEventListener('click',()=>$('toast').classList.remove('on'));
 const unlock=(id)=>{const el=$(id);el.classList.remove('locked');setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150)};
+
+
+// secrets tracker
+const SECRETS=[['seat','.seat:not(.aisle):not(.lap)'],['lap','.seat.lap'],['bag','#bagok'],['lights','[data-k=lights]'],['door','[data-k=door]'],['phone','[data-k=phone]'],['dress','[data-k=dress]'],['vol','#vol'],['turb','#turbBtn'],['call','#callBtn'],['mirror','#mirrorBtn'],['office','#officeBtn'],['shop','#shop button'],['movie','.poster'],['gate','#gateBtn'],['land','#land button'],['pa','#paBtn'],['customs','#custBtn'],['delay','#delay'],['go','#go']];
+const foundSet=new Set();$('progT').textContent=SECRETS.length;
+function found(k){if(foundSet.has(k))return;foundSet.add(k);const n=foundSet.size;$('progN').textContent=n;const pr=$('prog');pr.classList.remove('bump');void pr.offsetWidth;pr.classList.add('bump');
+  if(n===SECRETS.length){pr.classList.add('done');setTimeout(()=>toast('🏆 You found every secret, Lulu! Now come and collect your prize in person. 😏'),3400)}}
+document.addEventListener('pointerdown',e=>{for(const [k,sel] of SECRETS){if(e.target.closest(sel)){found(k);break}}},true);
 
 // 1 check-in
 let nmDone=false;
 $('checkin').addEventListener('click',()=>{
-  $('ppName').textContent=pname.toUpperCase();
+  $('ppName').textContent=pname.toUpperCase();$('prog').classList.add('on');
   if(nmDone){unlock('s2');return}
   const m=$('nmeter');m.classList.add('on');$('checkin').disabled=true;$('checkin').textContent='Scanning passenger… 😳';
   let v=0;const t=setInterval(()=>{v+=v<100?3:17;$('nmFill').style.width=Math.min(v,100)+'%';$('nmVal').textContent=v+'%';
