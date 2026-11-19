@@ -218,15 +218,11 @@
   .land button span{font-size:28px;display:block}.land button b{display:block;font-size:15px;margin-top:6px}.land button small{font-size:12px;color:var(--muted)}
   .land button.sel{border-color:var(--red);background:#fff0f3;box-shadow:0 0 0 3px #ffd3df}
   .pa{background:var(--navy);color:#fff;border-radius:18px 18px 18px 4px;padding:20px;margin-top:16px;font-size:16.5px;line-height:1.55;font-weight:600;min-height:110px;transition:opacity .25s}
-  .music{position:fixed;left:10px;bottom:10px;z-index:95;width:176px;background:var(--navy);border-radius:14px;overflow:hidden;
+  .music{position:fixed;left:10px;bottom:10px;z-index:95;width:250px;background:var(--navy);border-radius:14px;overflow:hidden;
     box-shadow:0 10px 30px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);transition:transform .4s;transform:translateY(160%)}
   .music.on{transform:none}
-  .music .yt{width:176px;height:99px;background:#000}
-  .music .yt iframe{width:100%;height:100%;display:block}
-  .mctl{display:flex;align-items:center;gap:8px;padding:8px 10px;color:#fff}
-  .mctl .mt{flex:1;min-width:0}.mctl b{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .mctl small{font-size:10.5px;color:#aeb3d6}
-  .mctl button{flex:none;width:32px;height:32px;border-radius:50%;border:none;background:var(--red);color:#fff;font-size:13px;cursor:pointer}
+  .mhead{display:flex;justify-content:space-between;align-items:center;padding:7px 10px 5px;color:#ffd0dc;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .music iframe{display:block;border:0}
   .eq{display:flex;gap:2px;align-items:flex-end;height:12px}.eq i{width:3px;background:var(--pink);animation:wv 1s infinite}
   .eq i:nth-child(2){animation-delay:.2s}.eq i:nth-child(3){animation-delay:.4s}
   .music.paused .eq i{animation:none;height:3px}
@@ -484,10 +480,10 @@
 <footer>Kiss Air is a fully licensed airline of love. Members: Lulu only, forever.</footer>
 
 <div class="music" id="music">
-  <div class="yt"><div id="ytp"></div></div>
-  <div class="mctl"><div class="mt"><b>🎵 Wallah Zaman</b><small>Ahmed Saad</small></div><div class="eq"><i></i><i></i><i></i></div><button id="mBtn" aria-label="Play or pause music">❚❚</button></div>
+  <div class="mhead"><span>🎵 Now playing on Kiss Air</span><div class="eq"><i></i><i></i><i></i></div></div>
+  <div id="spot"></div>
 </div>
-<script src="https://www.youtube.com/iframe_api"></script>
+<script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 <div class="toast" id="toast"></div>
 <div class="bigplane" id="bigplane">✈️</div>
 <div class="overlay" id="overlay">
@@ -507,17 +503,16 @@ const toast=(t)=>{const el=$('toast');el.textContent=t;el.classList.add('on');cl
 const unlock=(id)=>{const el=$(id);el.classList.remove('locked');setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150)};
 
 
-// background music (official YouTube video)
-let yt=null,ytReady=false,wantPlay=false,playing=false;
-window.onYouTubeIframeAPIReady=function(){
-  yt=new YT.Player('ytp',{videoId:'0UvH9sGIaw0',host:'https://www.youtube.com',
-    playerVars:{playsinline:1,loop:1,playlist:'0UvH9sGIaw0',rel:0,modestbranding:1},
-    events:{onReady:()=>{ytReady=true;if(wantPlay)yt.playVideo()},
-      onStateChange:e=>{playing=e.data===1;$('music').classList.toggle('paused',!playing);$('mBtn').textContent=playing?'❚❚':'▶'}}});
+// background music (official Spotify embed, no ads)
+let spot=null,wantPlay=false;
+window.onSpotifyIframeApiReady=(API)=>{
+  API.createController($('spot'),{uri:'spotify:track:6O6eij2ncKHjy8j0BxD75V',width:'100%',height:80},(c)=>{
+    spot=c;
+    c.addListener('playback_update',e=>$('music').classList.toggle('paused',e.data.isPaused));
+    c.addListener('ready',()=>{if(wantPlay)c.play()});
+  });
 };
-function startMusic(){wantPlay=true;$('music').classList.add('on');if(ytReady){yt.unMute();yt.setVolume(70);yt.playVideo()}}
-$('mBtn').addEventListener('click',()=>{if(!ytReady)return;playing?yt.pauseVideo():yt.playVideo()});
-
+function startMusic(){wantPlay=true;$('music').classList.add('on','paused');if(spot)spot.play()}
 // 1 check-in
 $('checkin').addEventListener('click',()=>{
   
