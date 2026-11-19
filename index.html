@@ -218,6 +218,29 @@
   .land button span{font-size:28px;display:block}.land button b{display:block;font-size:15px;margin-top:6px}.land button small{font-size:12px;color:var(--muted)}
   .land button.sel{border-color:var(--red);background:#fff0f3;box-shadow:0 0 0 3px #ffd3df}
   .pa{background:var(--navy);color:#fff;border-radius:18px 18px 18px 4px;padding:20px;margin-top:16px;font-size:16.5px;line-height:1.55;font-weight:600;min-height:110px;transition:opacity .25s}
+  .nmeter{display:none;margin-top:14px;background:#1c1416;border-radius:12px;padding:12px 14px;color:#ffe3ea}
+  .nmeter.on{display:block}.nmeter.over{animation:turb .15s 6}
+  .nm-top{display:flex;justify-content:space-between;font-size:13px;font-weight:700}.nm-top b{font-family:"Space Grotesk";font-size:18px;color:#fff}
+  .nm-bar{height:10px;border-radius:99px;background:#3a2328;margin-top:8px;overflow:hidden}
+  .nm-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff9db5,#ff2e63,#ff3b1f);transition:width .08s linear}
+  .nm-res{font-size:12.5px;font-weight:700;color:#ff8fb1;margin-top:8px;min-height:16px}
+  .hist{margin-top:14px}
+  .hist div{display:grid;grid-template-columns:64px 1fr auto;gap:8px;align-items:center;padding:11px 0;border-bottom:1px dashed var(--line);font-size:13.5px}
+  .hist .fn{font-family:"Space Grotesk";font-weight:700}
+  .hist div:not(.now) span{text-decoration:line-through;color:var(--muted)}
+  .st{font-style:normal;font-size:10.5px;font-weight:800;padding:4px 8px;border-radius:99px;text-transform:uppercase;letter-spacing:.04em}
+  .st.c{background:#f1eff8;color:var(--muted)}.st.ok2{background:#16a36b;color:#fff;animation:ping2 1.6s infinite}
+  @keyframes ping2{50%{box-shadow:0 0 0 6px rgba(22,163,107,.18)}}
+  .hist .now{border:none;font-weight:700}
+  .nmt{margin-top:12px;text-align:center;font-weight:800;color:var(--red);font-size:16px}
+  .tg.vol input{width:100%;margin-top:10px;accent-color:var(--red)}
+  .req{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .req div{background:#faf8ff;border:1px solid var(--line);border-radius:12px;padding:12px}
+  .req div:last-child{grid-column:1/-1}
+  .req small{display:block;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .req b{font-size:14px;display:block;margin-top:3px}
+  body.mirror main,body.mirror header{transform:scaleX(-1);transition:transform .6s}
+  main,header{transition:transform .6s}
 </style>
 </head>
 <body>
@@ -248,6 +271,7 @@
     <label for="pname">Passenger name</label>
     <input id="pname" value="Lulu" readonly style="font-weight:800;letter-spacing:.04em">
     <div style="font-size:12px;color:#16a36b;font-weight:700;margin-top:8px">✓ Identity verified: the most beautiful passenger in the world</div>
+    <div class="nmeter" id="nmeter"><div class="nm-top"><span>😈 Naughty level scan</span><b id="nmVal">0%</b></div><div class="nm-bar"><i id="nmFill"></i></div><div class="nm-res" id="nmRes"></div></div>
     <button class="btn btn-red" id="checkin">Check in, Lulu ✈</button>
   </div>
 
@@ -292,10 +316,26 @@
         <div class="f"><small>Boarding</small><b>Tonight</b></div>
         <div class="f"><small>Duration</small><b>All night</b></div>
         <div class="f"><small>Return</small><b>Never</b></div>
+        <div class="f wide"><small>Passenger status</small><b>😈 Certified Naughty · Gold Member</b></div>
       </div>
       <div class="perf"></div>
       <div class="barcode"><div class="bars"></div><small class="mono">ILY·143</small></div>
     </div>
+  </section>
+
+  <!-- FLIGHT HISTORY -->
+  <section class="card locked" id="s16">
+    <div class="step"><b>✈</b>Your flight history</div>
+    <h2>Previous bookings</h2>
+    <p class="sub">The airline has noticed a pattern, Lulu. 🤨</p>
+    <div class="hist">
+      <div><span class="fn">KS061</span><span>Hurghada</span><em class="st c">Cancelled · "next time"</em></div>
+      <div><span class="fn">KS063</span><span>Hurghada</span><em class="st c">Postponed · "next time"</em></div>
+      <div><span class="fn">KS065</span><span>Hurghada</span><em class="st c">Delayed · "next time"</em></div>
+      <div><span class="fn">KS067</span><span>Hurghada</span><em class="st c">Rescheduled · "next time"</em></div>
+      <div class="now"><span class="fn">KS069</span><span>Hurghada</span><em class="st ok2">CONFIRMED · Tonight</em></div>
+    </div>
+    <div class="nmt">No more "next time". Tonight. 😏</div>
   </section>
 
   <!-- 5 MENU -->
@@ -315,6 +355,7 @@
       <div class="dish"><div><h5>You, unwrapped</h5><p>The only dessert the captain wants. Served without the packaging. Eaten very, very slowly.</p></div><span class="tag2">18+</span></div>
       <div class="dish"><div><h5>Chef's special: the peach 🍑</h5><p>The captain's favourite. Served from behind, with a firm grip.</p></div><span class="tag2">🔥 Special</span></div>
       <div class="dish"><div><h5>Twin desserts 🍒🍒</h5><p>A perfect matching pair. The captain tastes both, slowly, and gives each equal attention.</p></div><span class="tag2">🔥 Double</span></div>
+      <div class="dish"><div><h5>Tea with milk, 3 AM</h5><p>Served in bed after round two. With cake, if you still have the energy. ☕</p></div><span class="tag2">Late night</span></div>
       <div class="dish"><div><h5>Breakfast</h5><p>Served at noon. In bed. Because nobody is sleeping tonight.</p></div><span class="tag2">😏</span></div>
     </div>
   </section>
@@ -348,11 +389,27 @@
       <div class="tg"><div><b>🔒 Cabin door</b><small id="t2">Unlocked</small></div><button class="sw" data-k="door"></button></div>
       <div class="tg"><div><b>📵 Phones</b><small id="t3">On</small></div><button class="sw" data-k="phone"></button></div>
       <div class="tg"><div><b>👗 Dress code</b><small id="t4">Fully dressed</small></div><button class="sw" data-k="dress"></button></div>
+      <div class="tg vol"><div style="flex:1"><b>🔊 Your volume tonight</b><small id="volTxt">Maximum. Locked by the captain.</small><input type="range" id="vol" min="0" max="100" value="100"></div></div>
     </div>
     <div class="ctrl">
       <button class="btn btn-navy" id="turbBtn">🌪️ Turbulence</button>
       <button class="btn btn-red" style="margin:0;box-shadow:none" id="callBtn">🔔 Call the captain</button>
+      <button class="btn btn-ghost" style="grid-column:1/-1" id="mirrorBtn">🪞 Mirror mode</button>
     </div>
+  </section>
+
+  <!-- OFFICE REQUEST -->
+  <section class="card locked" id="s17">
+    <div class="step"><b>✉</b>Special request from the captain</div>
+    <h2>Office visit 🏢🤫</h2>
+    <div class="req">
+      <div><small>Request</small><b>One kiss in the captain's office</b></div>
+      <div><small>Door</small><b>Locked</b></div>
+      <div><small>Witnesses</small><b>None</b></div>
+      <div><small>Duration</small><b>"Just one kiss"… we both know it won't be one</b></div>
+    </div>
+    <button class="btn btn-red" id="officeBtn">Approve request 😏</button>
+    <div class="stamp2" id="officeStamp">APPROVED · NOBODY WILL KNOW 🤫</div>
   </section>
 
   <!-- 8 DUTY FREE -->
@@ -453,6 +510,7 @@
     <label class="chk"><input type="checkbox">I accept that the captain will not keep his eyes, or his hands, off my chest. 🍒</label>
     <label class="chk"><input type="checkbox">I agree to be pulled in by the waist the moment I walk through the door.</label>
     <label class="chk"><input type="checkbox">I agree to be kissed the moment I arrive, before saying hello.</label>
+    <label class="chk"><input type="checkbox">I admit I call him a sweet-talker… but I secretly love every word. 😂</label>
     <button class="btn btn-red" id="custBtn">Submit declaration</button>
     <div class="stamp2" id="custStamp">APPROVED · HURGHADA CUSTOMS 💋</div>
   </section>
@@ -489,11 +547,16 @@ const toast=(t)=>{const el=$('toast');el.textContent=t;el.classList.add('on');cl
 const unlock=(id)=>{const el=$(id);el.classList.remove('locked');setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150)};
 
 // 1 check-in
+let nmDone=false;
 $('checkin').addEventListener('click',()=>{
-  
   $('ppName').textContent=pname.toUpperCase();
-  toast(`Welcome aboard, ${pname} 💋`);
-  unlock('s2');
+  if(nmDone){unlock('s2');return}
+  const m=$('nmeter');m.classList.add('on');$('checkin').disabled=true;$('checkin').textContent='Scanning passenger… 😳';
+  let v=0;const t=setInterval(()=>{v+=v<100?3:17;$('nmFill').style.width=Math.min(v,100)+'%';$('nmVal').textContent=v+'%';
+    if(v>=100)m.classList.add('over');
+    if(v>=999){clearInterval(t);$('nmVal').textContent='999%';$('nmRes').textContent='Passenger classified: EXTREMELY NAUGHTY 😈 Boarding approved.';
+      nmDone=true;$('checkin').disabled=false;$('checkin').textContent='Continue, naughty passenger ✈';toast(`Welcome aboard, ${pname} 💋`);setTimeout(()=>unlock('s2'),700)}
+  },40);
 });
 $('pname').addEventListener('keydown',e=>{if(e.key==='Enter')$('checkin').click()});
 
@@ -514,7 +577,7 @@ for(let r=0;r<6;r++){for(let c=0;c<5;c++){
 $('bagok').addEventListener('click',()=>{
   toast('Baggage approved. Pyjamas confiscated. 😇');
   unlock('s4'); setTimeout(()=>$('pass').classList.add('show'),500);
-  setTimeout(()=>{['s5','s6','s9','s10','s11','s12','s14','s15','s7','s13','s8'].forEach(id=>$(id).classList.remove('locked'));startCaptain()},1400);
+  setTimeout(()=>{['s16','s5','s6','s9','s17','s10','s11','s12','s14','s15','s7','s13','s8'].forEach(id=>$(id).classList.remove('locked'));startCaptain()},1400);
 });
 
 // 7 captain typewriter
@@ -583,8 +646,19 @@ const pas=[
 "We're expecting heavy turbulence in the bedroom area. Hold on to the headboard.",
 "For your comfort, all clothing must be removed before landing. Thank you for your cooperation.",
 "This is your captain. I'm already hard at work up here… thinking about you. 😇",
+"Reminder: talking after midnight is strictly forbidden on this flight… unless it's in bed, whispered in my ear. 🌙",
 "Good evening, Lulu. Please fasten your seatbelt. It's going to be a bumpy night."];
 let pi=0;$('paBtn').addEventListener('click',()=>{const el=$('pa');el.style.opacity=0;setTimeout(()=>{el.textContent='"'+pas[pi++%pas.length]+'"';el.style.opacity=1},220)});
+
+
+// volume locked at max
+const vol=$('vol');
+vol.addEventListener('input',()=>{ if(+vol.value<100){ $('volTxt').textContent='Nice try. The captain insists. 😏'; } });
+vol.addEventListener('change',()=>{ vol.value=100; toast('Volume locked at maximum. The walls signed an NDA. 🔊😏'); setTimeout(()=>$('volTxt').textContent='Maximum. Locked by the captain.',1800) });
+// mirror mode
+$('mirrorBtn').addEventListener('click',()=>{document.body.classList.add('mirror');toast('Some views are better in the mirror… 😏🪞');setTimeout(()=>document.body.classList.remove('mirror'),2600)});
+// office request
+$('officeBtn').addEventListener('click',()=>{$('officeStamp').classList.add('on');$('officeBtn').textContent='Approved ✓';toast('Request approved. Lock the door. 🤫')});
 
 // 8 runaway delay
 const quips=['Delays not permitted','Nice try 😏','Flight is on time','The captain says no','Not happening','Just press Take off 🥺'];
