@@ -506,14 +506,17 @@ const unlock=(id)=>{const el=$(id);el.classList.remove('locked');setTimeout(()=>
 
 
 // background music (official SoundCloud widget)
-let sc=null,muted=false;
+let sc=null,scReady=false,wantMusic=false,muted=false,isPlaying=false;
 try{sc=SC.Widget($('sc'));
-  sc.bind(SC.Widget.Events.PLAY,()=>$('music').classList.remove('paused'));
-  sc.bind(SC.Widget.Events.PAUSE,()=>$('music').classList.add('paused'));
+  sc.bind(SC.Widget.Events.READY,()=>{scReady=true;sc.setVolume(70);if(wantMusic)sc.play()});
+  sc.bind(SC.Widget.Events.PLAY,()=>{isPlaying=true;$('music').classList.remove('paused')});
+  sc.bind(SC.Widget.Events.PAUSE,()=>{isPlaying=false;$('music').classList.add('paused')});
   sc.bind(SC.Widget.Events.FINISH,()=>{sc.seekTo(0);sc.play()});
 }catch(e){}
-function startMusic(){$('music').classList.add('on');if(sc){sc.setVolume(70);sc.play()}}
-$('mBtn').addEventListener('click',()=>{if(!sc)return;muted=!muted;sc.setVolume(muted?0:70);$('mBtn').textContent=muted?'🔇':'🔊'});
+function startMusic(){wantMusic=true;$('music').classList.add('on');if(sc&&scReady)sc.play()}
+// keep nudging playback on her taps until it actually starts
+document.addEventListener('pointerdown',e=>{if(wantMusic&&!isPlaying&&!muted&&sc&&scReady&&!e.target.closest('#music'))sc.play()},true);
+$('mBtn').addEventListener('click',()=>{if(!sc)return;muted=!muted;sc.setVolume(muted?0:70);$('mBtn').textContent=muted?'🔇':'🔊';if(!muted&&!isPlaying)sc.play()});
 // 1 check-in
 $('checkin').addEventListener('click',()=>{
   
