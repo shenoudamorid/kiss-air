@@ -241,6 +241,16 @@
   .req b{font-size:14px;display:block;margin-top:3px}
   body.mirror main,body.mirror header{transform:scaleX(-1);transition:transform .6s}
   main,header{transition:transform .6s}
+  .past{margin-top:14px;border:1.5px dashed var(--line);border-radius:16px;padding:16px;background:#fcfbff}
+  .past-top{display:flex;justify-content:space-between;align-items:center}
+  .past-top .fn{font-family:"Space Grotesk";font-weight:700;font-size:15px}
+  .st.ok3{background:#eefaf4;color:#155e43}
+  .past-route{display:flex;justify-content:space-between;align-items:center;margin:12px 0 14px}
+  .past-route b{font-family:"Space Grotesk";font-size:28px}.past-route span{color:var(--red);font-size:18px}
+  .past-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 10px}
+  .past-grid .w{grid-column:1/-1}
+  .past-grid small{display:block;font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .past-grid b{font-size:13.5px;display:block;margin-top:3px}
 </style>
 </head>
 <body>
@@ -326,16 +336,24 @@
   <!-- FLIGHT HISTORY -->
   <section class="card locked" id="s16">
     <div class="step"><b>✈</b>Your flight history</div>
-    <h2>Previous bookings</h2>
-    <p class="sub">The airline has noticed a pattern, Lulu. 🤨</p>
-    <div class="hist">
-      <div><span class="fn">KS061</span><span>Hurghada</span><em class="st c">Cancelled · "next time"</em></div>
-      <div><span class="fn">KS063</span><span>Hurghada</span><em class="st c">Postponed · "next time"</em></div>
-      <div><span class="fn">KS065</span><span>Hurghada</span><em class="st c">Delayed · "next time"</em></div>
-      <div><span class="fn">KS067</span><span>Hurghada</span><em class="st c">Rescheduled · "next time"</em></div>
-      <div class="now"><span class="fn">KS069</span><span>Hurghada</span><em class="st ok2">CONFIRMED · Tonight</em></div>
+    <h2>Previous flight</h2>
+    <p class="sub">The airline remembers everything, Lulu. 😏</p>
+    <div class="past">
+      <div class="past-top"><span class="fn">KS068</span><span class="st ok3">Completed ✓</span></div>
+      <div class="past-route"><b>MNF</b><span>🚌 ✈ ♥</span><b>HRG</b></div>
+      <div class="past-grid">
+        <div><small>Departed</small><b>20 October, 4 AM</b></div>
+        <div><small>Class</small><b>Bus class 😂</b></div>
+        <div><small>Highlight</small><b>Passenger saw the sea 🌊</b></div>
+        <div><small>Return</small><b>22 October · way too soon 🥲</b></div>
+        <div class="w"><small>Incident report</small><b>The long mirror 🪞 · Classified</b></div>
+        <div class="w"><small>Captain's rating</small><b>★★★★★ · Still thinking about it every day</b></div>
+      </div>
     </div>
-    <div class="nmt">No more "next time". Tonight. 😏</div>
+    <div class="hist">
+      <div class="now"><span class="fn">KS069</span><span>Menoufia → Hurghada</span><em class="st ok2">CONFIRMED · Tonight</em></div>
+    </div>
+    <div class="nmt">Round two. And this time, no early return. 😏</div>
   </section>
 
   <!-- 5 MENU -->
